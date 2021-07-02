@@ -1,4 +1,12 @@
-import { Schema } from "mongoose";
+import { ObjectId } from "mongodb";
+import { model, Schema, Document, Model } from "mongoose";
+
+interface ITodo extends Document {
+  _id: string;
+  createdAt: Date | string;
+  status: string;
+  value: string | number;
+}
 
 // TODO: Define schema for Todos properties and define schema for todos Status
 const TodoSchema = new Schema(
@@ -8,12 +16,15 @@ const TodoSchema = new Schema(
       require: true,
     },
     status: {
-      type: 
+      type: ObjectId,
+      require: true,
     },
   },
   {
-    timestamps: {
-      createdAt: String(new Date().toISOString),
-    },
+    timestamps: true,
   }
 );
+
+const TodoModel: Model<ITodo> = model("TodoModel", TodoSchema, "todos");
+
+export { TodoModel, ITodo };
